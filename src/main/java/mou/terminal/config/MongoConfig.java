@@ -21,13 +21,14 @@ import java.util.Collections;
 @EnableMongoRepositories(basePackages = "mou.terminal.repository", mongoTemplateRef = "MongoTemplate")
 public class MongoConfig {
 
+    @Primary
     @Bean(name = "MongoProperties")
     @ConfigurationProperties(prefix = "mongodb")
-    @Primary
     public MongoProperties MonngoProperties(){
         return new MongoProperties();
     }
-    
+
+    @Primary
     @Bean(name = "MongoClient")
     public MongoClient mongoClient(@Qualifier("MongoProperties") MongoProperties mongoProperties){
         
@@ -36,6 +37,7 @@ public class MongoConfig {
                                 .hosts(Collections.singletonList(new ServerAddress(mongoProperties.getHost(),mongoProperties.getPort()))))
                 .build());
     }
+
 
     @Primary
     @Bean(name = "MongoDBFactory")
