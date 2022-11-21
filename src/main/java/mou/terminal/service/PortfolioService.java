@@ -1,6 +1,8 @@
 package mou.terminal.service;
 
+import lombok.extern.slf4j.Slf4j;
 import mou.terminal.rdbmsDomain.Portfolio;
+import mou.terminal.rdbmsDomain.PortfolioChangeRecord;
 import mou.terminal.rdbmsDomain.PortfolioContent;
 import mou.terminal.rdbmsRepository.PortfolioChangeRecordRepo;
 import mou.terminal.rdbmsRepository.PortfolioContentRepo;
@@ -8,78 +10,77 @@ import mou.terminal.rdbmsRepository.PortfolioRepo;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
+@Slf4j
 @Service
 @Transactional
 public class PortfolioService {
 
     private final PortfolioRepo portfolioRepo;
     private final PortfolioContentRepo portfolioContentRepo;
-//    private final PortfolioChangeRecordRepo portfolioChangeRecordRepo;
+    private final PortfolioChangeRecordRepo portfolioChangeRecordRepo;
 
-    PortfolioService(PortfolioRepo portfolioRepo, PortfolioContentRepo portfolioContentRepo){
+    PortfolioService(PortfolioRepo portfolioRepo, PortfolioContentRepo portfolioContentRepo, PortfolioChangeRecordRepo portfolioChangeRecordRepo){
         this.portfolioRepo = portfolioRepo;
         this.portfolioContentRepo = portfolioContentRepo;
-//        this.portfolioChangeRecordRepo = portfolioChangeRecordRepo;
+        this.portfolioChangeRecordRepo = portfolioChangeRecordRepo;
     }
 
     public List<Portfolio> findAllPortList(){
+
+        log.debug("FindAllPortList Running...");
+
         return this.portfolioRepo.findAll();
     }
 
-//    public Portfolio findPortTitleById(int id) {return this.portfolioRepo.findById(id);}
+    public int deleteByPortId(int id){
 
-    public void deleteByPortId(int id){
+        PortfolioContent portfolioContent = this.portfolioContentRepo.findByPortfolio_Id(id);
 
-//        PortfolioContent portfolioContent = this.findPortbyPortFolioId(id);
-//
-//        portfolioRepo.deleteById(id);
-//        portfolioContentRepo.deleteById("o");
-//
-//        insert portfoliorecord
+        this.backupRecord(portfolioContent);
 
+        this.portfolioRepo.deleteById(id);
+
+        return 1;
     }
 
     public PortfolioContent findPort(int id){
-        return this.portfolioContentRepo.findByPortFolioId(id);
+        return this.portfolioContentRepo.findByPortfolio_Id(id);
     }
 
-    public void addPort() {
+    public int addPort(Portfolio portfolio,String content, String ref) {
 
-        Portfolio tes = new Portfolio();
-        tes.setTitle("현대차");
-        tes.setRegDate(new Date("2022-11-19"));
-        tes.setType("유형");
+        this.portfolioRepo.save(portfolio);
 
-        PortfolioContent portfolioContent1 = PortfolioContent.builder()
-                .content("zzz")
-                .portfolio(tes)
-                .ref("zzz")
-                .build();
+        PortfolioContent portfolioContent = PortfolioContent.builder()
+                .content(content)
+                .portfolio(portfolio)
+                .ref(ref).build();
 
-        this.portfolioContentRepo.save(portfolioContent1);
+        this.portfolioContentRepo.save(portfolioContent);
 
+        return 1;
     }
 
-    public void updatePort() {
+    public int updatePort(PortfolioContent response) {
 
-//        update portfolio업
-//        update portfolio content
+       this.backupRecord(response);
 
-//        insert portfoliorecord
+        this.portfolioContentRepo.save(response);
+
+        return 1;
     }
 
-    public void backupRecord(int id) {
-        // id 기준으로 포트폴리오 백
+    public void backupRecord(PortfolioContent portfolioContent) {
 
-        PortfolioContent portfolioContent = this.portfolioContentRepo.findByPortFolioId(id);
-
-
-
-        //insert portfolio
-
+        this.portfolioChangeRecordRepo.save(PortfolioChangeRecord.builder()
+                .title(portfolioContent.getPortfolio().getTitle())
+                .type(portfolioContent.getPortfolio().getType())
+                .content(portfolioContent.getContent())
+                .ref(portfolioContent.getRef())
+                .regDate(LocalDate.now()).build());
 
     }
 }

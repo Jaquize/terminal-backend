@@ -11,6 +11,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @Configuration
 @EnableWebSecurity(debug = true)
@@ -24,12 +27,12 @@ public class SecurityConfig {
 
 
         http
-//                .cors()
-//                .and()
-//                .csrf().disable()
+                .cors()
+                .and()
+                .csrf().disable()
                 .authorizeHttpRequests()
-                .mvcMatchers("/favicon.ico").permitAll()
-//                .anyRequest().denyAll()
+//                .mvcMatchers("/favicon.ico").permitAll()
+                .anyRequest().permitAll()
 //                .and()
 //                .formLogin()
 //                .loginPage("/login")
@@ -38,21 +41,19 @@ public class SecurityConfig {
 //                .failureHandler((request, response, exception) -> {
 //                    response.sendRedirect("/login/fail");
 //                })
-//                .and()
-//                .oauth2Login()
-//                .loginPage("/login/aa")
-//                .authorizationEndpoint()
-//                .baseUri("/oauth2/authorization")
-//                .and()
-//                .redirectionEndpoint()
-//                .baseUri("/*/oauth2/code/*")
-//                .and()
-//                .userInfoEndpoint()
-//                .userService(oauthUserInfoService);
                 .and()
                 .oauth2Login()
+//                .loginPage("/login/aa")
+                .defaultSuccessUrl("/login/success")
+                .authorizationEndpoint()
+                .baseUri("/oauth2/authorization")
+                .and()
+                .redirectionEndpoint()
+                .baseUri("/*/oauth2/code/*")
+                .and()
                 .userInfoEndpoint()
                 .userService(oauthUserInfoService);
+
 
         return http.build();
     }
@@ -75,6 +76,23 @@ public class SecurityConfig {
                 .build();
 
         return new InMemoryUserDetailsManager(user,admin);
+    }
+
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource(){
+
+        CorsConfiguration corsConfiguration = new CorsConfiguration();
+
+        corsConfiguration.addAllowedOrigin("http://localhost:3000");
+        corsConfiguration.addAllowedHeader("*");
+        corsConfiguration.addAllowedMethod("*");
+        corsConfiguration.setAllowCredentials(true);
+
+        UrlBasedCorsConfigurationSource src = new UrlBasedCorsConfigurationSource();
+        src.registerCorsConfiguration("/**",corsConfiguration);
+
+        return src;
+
     }
 
 }

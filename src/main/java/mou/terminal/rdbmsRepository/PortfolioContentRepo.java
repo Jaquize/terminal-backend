@@ -9,7 +9,13 @@ import java.util.List;
 
 public interface PortfolioContentRepo extends JpaRepository<PortfolioContent,String> {
 
-    @Query(value = "select * from portfolioContent where portFolioId = ?1",nativeQuery = true)
-    PortfolioContent findByPortFolioId(int id);
+
+    @Query("select p from PortfolioContent p join fetch p.portfolio")
+    List<PortfolioContent> findAllContent();
+
+    PortfolioContent findByPortfolio_Id(int id);
+
+//    @Query(value = "select * from portfolioContent where portFolioId = ?1",nativeQuery = true)
+//    PortfolioContent findByPortFolioId(int id);
 
 }

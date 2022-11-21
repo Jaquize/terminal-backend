@@ -1,12 +1,38 @@
 package mou.terminal.rdbmsDomain;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Date;
 
+@Builder
+@Entity
+@Table(name = "portFolioChangeRecord")
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
 public class PortfolioChangeRecord {
 
-    private int id;
+    @Column(name = "title", nullable = false)
     private String title;
+
+    @Column(name = "type", nullable = false)
     private String type;
-    private Date changeDate;
+
+    @Column(name = "content", nullable = false)
+    private String content;
+
+    @Id
+    @Column(name = "ref", nullable = false)
+    private String ref;
+
+    @Column(name = "regDate", nullable = false)
+    private LocalDate regDate;
+
+
 
 }

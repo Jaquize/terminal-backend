@@ -1,16 +1,20 @@
 package mou.terminal.rdbmsDomain;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Date;
 
+@Builder
 @Entity
 @Table(name = "portfolio")
 @Getter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Portfolio {
 
     @Id
@@ -23,20 +27,13 @@ public class Portfolio {
 
     @Column(name = "type", nullable = false)
     private String type;
+//
+//    @OneToOne
+//    @JoinColumn(name = "id")
+//    private PortfolioContent portfolioContent;
 
-//    @Column(name = "content", nullable = false)
-//    private String content;
-
-//    @Column(name = "ref", nullable = false)
-//    private String ref;
-
-    @Access(AccessType.PROPERTY)
-    @Temporal(TemporalType.DATE)
     @Column(name = "regDate", nullable = false)
     private LocalDate regDate;
 
-//    @OneToOne
-//    @JoinColumn(name = "id")
-//    private PortfolioContent portpolioContent;
 
 }
