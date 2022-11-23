@@ -1,7 +1,12 @@
 package mou.terminal.config;
 
 import lombok.RequiredArgsConstructor;
+import mou.terminal.security.handler.OAuth2AuthenticationFailHandler;
+import mou.terminal.security.handler.OAuth2AuthenticationSuccessHandler;
+import mou.terminal.security.properties.OauthProperties;
+import mou.terminal.security.provider.JwtTokenProvider;
 import mou.terminal.security.service.OauthUserInfoService;
+import mou.terminal.web.repository.mysql.auth.UserRefreshTokenRepo;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -21,10 +26,12 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 public class SecurityConfig {
 
     private final OauthUserInfoService oauthUserInfoService;
+    private final OauthProperties oauthProperties;
+    private final JwtTokenProvider jwtTokenProvider;
+    private final UserRefreshTokenRepo userRefreshTokenRepo;
 
     @Bean
     public SecurityFilterChain FilterChain(HttpSecurity http) throws Exception{
-
 
         http
                 .cors()
@@ -44,7 +51,6 @@ public class SecurityConfig {
                 .and()
                 .oauth2Login()
 //                .loginPage("/login/aa")
-                .defaultSuccessUrl("/login/success")
                 .authorizationEndpoint()
                 .baseUri("/oauth2/authorization")
                 .and()
@@ -52,8 +58,10 @@ public class SecurityConfig {
                 .baseUri("/*/oauth2/code/*")
                 .and()
                 .userInfoEndpoint()
-                .userService(oauthUserInfoService);
-
+                .userService(oauthUserInfoService)
+                .and()
+                .successHandler(new OAuth2AuthenticationSuccessHandler(this.jwtTokenProvider,this.oauthProperties,this.userRefreshTokenRepo))
+                .failureHandler(new OAuth2AuthenticationFailHandler());
 
         return http.build();
     }

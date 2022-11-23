@@ -1,5 +1,6 @@
-package mou.terminal.web.domain.mysql.user;
+package mou.terminal.web.domain.mysql.auth;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.Column;
@@ -17,6 +18,7 @@ import java.time.LocalDateTime;
 @Table(name = "User")
 public class User {
 
+    @JsonIgnore
     @Id
     @Column(name = "id", nullable = false )
     private int id;

@@ -2,9 +2,9 @@ package mou.terminal.security.service;
 
 import lombok.extern.slf4j.Slf4j;
 import mou.terminal.security.userInfo.GoogleUserInfo;
-import mou.terminal.web.domain.mysql.user.User;
+import mou.terminal.web.domain.mysql.auth.User;
 import mou.terminal.security.domain.UserPrincipal;
-import mou.terminal.security.repository.UserInfoRepo;
+import mou.terminal.web.repository.mysql.auth.UserInfoRepo;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
@@ -30,15 +30,15 @@ public class OauthUserInfoService extends DefaultOAuth2UserService {
 
         GoogleUserInfo googleUserInfo = new GoogleUserInfo(oAuth2User.getAttributes());
 
-        User user = null;
+        User user = this.userInfoRepo.findByUserId(googleUserInfo.getId());
 
-
-        if(this.userInfoRepo.findByUserId(googleUserInfo.getId()) == null){
+        if(user == null){
             user = this.createUser(googleUserInfo);
         }
-        return UserPrincipal.create(user,oAuth2User.getAttributes());
-    }
 
+        return UserPrincipal.create(user,oAuth2User.getAttributes());
+
+    }
 
     private User createUser(GoogleUserInfo googleUserInfo){
 

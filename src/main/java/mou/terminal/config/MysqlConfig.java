@@ -11,7 +11,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import javax.sql.DataSource;
 
 @Configuration
-@EnableJpaRepositories(basePackages = "mou.terminal.rdbmsRepository")
+@EnableJpaRepositories(basePackages = "mou.terminal.web.repository.mysql")
 public class MysqlConfig {
 
     @Bean(name = "MysqlProperties")

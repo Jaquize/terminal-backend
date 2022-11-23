@@ -1,4 +1,4 @@
-package mou.terminal.web.repository.mysql;
+package mou.terminal.web.repository.mysql.portFolio;
 
 
 import mou.terminal.web.domain.mysql.portFolio.PortfolioContent;

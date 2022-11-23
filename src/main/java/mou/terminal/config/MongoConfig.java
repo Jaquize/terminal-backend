@@ -18,7 +18,7 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 import java.util.Collections;
 
 @Configuration
-@EnableMongoRepositories(basePackages = "mou.terminal.repository", mongoTemplateRef = "MongoTemplate")
+@EnableMongoRepositories(basePackages = "mou.terminal.web.repository.mongoDB", mongoTemplateRef = "MongoTemplate")
 public class MongoConfig {
 
     @Primary

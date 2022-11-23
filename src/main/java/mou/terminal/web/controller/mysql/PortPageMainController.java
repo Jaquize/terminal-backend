@@ -1,6 +1,6 @@
 package mou.terminal.web.controller.mysql;
 
-import mou.terminal.util.AdapterResponseEntity;
+import mou.terminal.util.response.AdapterResponseEntity;
 import mou.terminal.web.service.mongoDB.PortfolioService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;

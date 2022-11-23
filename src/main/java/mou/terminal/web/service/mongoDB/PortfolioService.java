@@ -4,9 +4,9 @@ import lombok.extern.slf4j.Slf4j;
 import mou.terminal.web.domain.mysql.portFolio.Portfolio;
 import mou.terminal.web.domain.mysql.portFolio.PortfolioChangeRecord;
 import mou.terminal.web.domain.mysql.portFolio.PortfolioContent;
-import mou.terminal.web.repository.mysql.PortfolioChangeRecordRepo;
-import mou.terminal.web.repository.mysql.PortfolioContentRepo;
-import mou.terminal.web.repository.mysql.PortfolioRepo;
+import mou.terminal.web.repository.mysql.portFolio.PortfolioChangeRecordRepo;
+import mou.terminal.web.repository.mysql.portFolio.PortfolioContentRepo;
+import mou.terminal.web.repository.mysql.portFolio.PortfolioRepo;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

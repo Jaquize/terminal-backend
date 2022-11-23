@@ -1,6 +1,6 @@
 package mou.terminal.web.controller.mysql;
 
-import mou.terminal.util.AdapterResponseEntity;
+import mou.terminal.util.response.AdapterResponseEntity;
 import mou.terminal.web.domain.mysql.portFolio.Portfolio;
 import mou.terminal.web.domain.mysql.portFolio.PortfolioContent;
 import mou.terminal.web.service.mongoDB.PortfolioService;
