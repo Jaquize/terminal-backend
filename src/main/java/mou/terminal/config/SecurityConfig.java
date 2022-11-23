@@ -1,7 +1,7 @@
 package mou.terminal.config;
 
 import lombok.RequiredArgsConstructor;
-import mou.terminal.service.OauthUserInfoService;
+import mou.terminal.security.service.OauthUserInfoService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
